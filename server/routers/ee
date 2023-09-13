@@ -1,0 +1,21 @@
+ 
+ 
+   const product=await ProductModel.findById({_id})
+ 
+ 
+ if(product){
+    const quant=product.quantity
+    let newquantity=quantity-sale_q;
+    await ProductModel.findByIdAndUpdate({_id},{
+      $set:{
+        quantity:newquantity
+      }
+    },{new:true})
+  }
+
+  const user=req.params.id
+  const data = new SalesModel({
+    ...req.body,
+    issuer:user
+  
+  });
