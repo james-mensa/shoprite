@@ -64,5 +64,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://shopriteapi.onrender.com"
+  "proxy": "http://localhost:3003"
 }
