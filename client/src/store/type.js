@@ -16,5 +16,5 @@ export const  ALLPRODUCTS="allproducts"
 export const EXPIREP="EXPIREP";
 export const ALLSALES="allsales"
 export const COURSESP="coursep";
-export const API="/api";
+export const API="";
 

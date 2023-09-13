@@ -69,22 +69,21 @@ const StartSaleform = () => {
     }
   });
   const dispatch = useDispatch();
-  const [total_price,settotalp]=useState(0);
+  const [total_price, settotalp] = useState(0);
   useEffect(() => {
     dispatch(getProducts());
   });
   const [cartItem, addCart] = useState([]);
-  useEffect(()=>{
-    cartItem.forEach((data)=>{
-        settotalp(total_price+data.price)
-      })
-  },[cartItem])
-  
-  
+  useEffect(() => {
+    cartItem.forEach((data) => {
+      settotalp(total_price + data.price);
+    });
+  }, [cartItem]);
+
   const Formik = useFormik({
     initialValues: {
-      issuer: Checkuser && Checkuser.account ? Checkuser.account._id :"" ,
-      productid:targetproduct ? targetproduct._id : "",
+      issuer: Checkuser && Checkuser.account ? Checkuser.account._id : "",
+      productid: targetproduct ? targetproduct._id : "",
       customer: "",
       payment: "",
       product: targetproduct ? targetproduct.productname : "",
@@ -98,16 +97,8 @@ const StartSaleform = () => {
       quantity: Yup.number().required("comfirm password"),
       price: Yup.number().required("field required"),
     }),
-    onSubmit: (value) => {
-    
-
-    },
+    onSubmit: (value) => {},
   });
-
-
-
-
-
 
   const checkdate = (daten) => {
     var givenDate = new Date(daten);
@@ -130,7 +121,7 @@ const StartSaleform = () => {
   const [productid, setproductid] = useState("");
   return (
     <div className="userdetail">
-   <p id="bottomform"></p>
+      <p id="bottomform"></p>
 
       <div className="purchase-layout">
         <div className="formissuer">
@@ -151,149 +142,124 @@ const StartSaleform = () => {
                     Formik.touched.product && Boolean(Formik.errors.product)
                   }
                 ></TextField>
-          
               </div>
-           
+
               <div className="formlayout">
-              <div className="formlayout-p">
-                {" "}
-                <p>
-                  <span style={{ color: "red" }}>*</span> Quantity
-                </p>
-                <TextField
-                  style={{ width: "30%" }}
-                  name="quantity"
-                  value={Formik.values.quantity}
-                  onChange={(data) => {
-                    if (data.target.value > targetproduct.quantity) {
-                      alert(`Maximum quantity is ${targetproduct.quantity} `);
-                    } else {
-                      Formik.setFieldValue("quantity", data.target.value);
+                <div className="formlayout-p">
+                  {" "}
+                  <p>
+                    <span style={{ color: "red" }}>*</span> Quantity
+                  </p>
+                  <TextField
+                    style={{ width: "30%" }}
+                    name="quantity"
+                    value={Formik.values.quantity}
+                    onChange={(data) => {
+                      if (data.target.value > targetproduct.quantity) {
+                        alert(`Maximum quantity is ${targetproduct.quantity} `);
+                      } else {
+                        Formik.setFieldValue("quantity", data.target.value);
 
-                      Formik.setFieldValue(
-                        "price",
-                        data.target.value * targetproduct.price
-                      );
+                        Formik.setFieldValue(
+                          "price",
+                          data.target.value * targetproduct.price
+                        );
+                      }
+                    }}
+                    onBlur={Formik.handleBlur}
+                    error={
+                      Formik.touched.quantity && Boolean(Formik.errors.quantity)
                     }
-                  }}
-                  onBlur={Formik.handleBlur}
-                  error={
-                    Formik.touched.quantity && Boolean(Formik.errors.quantity)
-                  }
-                ></TextField>
-              </div>
-              <div className="formlayout-p">
-                <p>
-                  <span style={{ color: "red" }}>*</span>GH₵ Unit Price
-                </p>
-                <TextField
-                  disabled
-                  style={{ width: "70%" }}
-                  name="price"
-                  value={Formik.values.price}
-                  onChange={Formik.handleChange}
-                  onBlur={Formik.handleBlur}
-                  error={Formik.touched.price && Boolean(Formik.errors.price)}
-                ></TextField>
+                  ></TextField>
+                </div>
+                <div className="formlayout-p">
+                  <p>
+                    <span style={{ color: "red" }}>*</span>GH₵ Unit Price
+                  </p>
+                  <TextField
+                    disabled
+                    style={{ width: "70%" }}
+                    name="price"
+                    value={Formik.values.price}
+                    onChange={Formik.handleChange}
+                    onBlur={Formik.handleBlur}
+                    error={Formik.touched.price && Boolean(Formik.errors.price)}
+                  ></TextField>
+                </div>
               </div>
             </div>
-            </div>
-
-           
-
-        
 
             <div className="sub-btn">
               {loading ? (
                 <CircleSpinner color="aqua" />
               ) : (
                 <>
-                  <Button onClick={()=>{
-                    Formik.setFieldValue("purchaseid",randomNumber)
-                        
-      addCart([...cartItem, Formik.values]);
-     
+                  <Button
+                    onClick={() => {
+                      Formik.setFieldValue("purchaseid", randomNumber);
 
-      
-                  }}>Add to Cart</Button>
+                      addCart([...cartItem, Formik.values]);
+                    }}
+                  >
+                    Add to Cart
+                  </Button>
                 </>
               )}
             </div>
           </form>
         </div>
         <div className="cart">
-        <div className="cart-info">
+          <div className="cart-info">
+            <p>Cart Items</p>
+            {cartItem.length > 0 ? (
+              <div className="cartdisplay">
+                <div className="headert">
+                  <div className="c-header-col">No</div>
+                  <div className="header-col-h">Product name</div>
+                  <div className="c-header-column">Quantity</div>
+                  <div className="c-header-column">Price (GH₵)</div>
+                </div>
 
-        <p>Cart Items</p>
-        {
-            cartItem.length > 0 ?
-            <div className="cartdisplay">
-            <div className="headert">
-            <div className="c-header-col">No</div>
-            <div className="header-col-h">Product name</div>
-            <div className="c-header-column">Quantity</div>
-            <div className="c-header-column">Price (GH₵)</div>
-          </div>
-     
-          
-          {
+                {cartItem.map((items, index) => {
+                  return (
+                    <div className="body-t" key={index}>
+                      <div className="c-header-col">{(index = 1)}</div>
 
-cartItem.map((items,index)=>{
-    return(
-        
-        <div className="body-t" key={index}>
-            <div className="c-header-col">{index=1}</div>
-
-            <div className="header-col-h">{items.product}</div>
-            <div className="c-header-column">{items.quantity}</div>
-            <div className="c-header-column">{items.price}</div>
-          </div>
-    )
-
-})
-
-
-}
-
-    
-                 
-
-
-     
-
-</div> 
-            
-          
-
-
-           :
-           <p>No Item added Yet</p>
-        }
-          
-     
-        </div>
-        <div className="cart-action">
-
-        <p>Total Price  GH₵<span style={{color:"blue"}}>{total_price}</span></p>
-
-        <div className="formlayout-p">
-                {" "}
-                <p>
-                  <span style={{ color: "red" }}>*</span> Customer
-                </p>
-                <TextField
-                  style={{ width: "100%" }}
-                  name="customer"
-                  value={Formik.values.barcode}
-                  onChange={Formik.handleChange}
-                  onBlur={Formik.handleBlur}
-                  error={
-                    Formik.touched.customer && Boolean(Formik.errors.customer)
-                  }
-                ></TextField>
+                      <div className="header-col-h">{items.product}</div>
+                      <div className="c-header-column">{items.quantity}</div>
+                      <div className="c-header-column">{items.price}</div>
+                    </div>
+                  );
+                })}
               </div>
+            ) : (
+              <p>No Item added Yet</p>
+            )}
+          </div>
+          <div className="cart-action">
+            <p>
+              Total Price GH₵
+              <span style={{ color: "blue" }}>{total_price}</span>
+            </p>
 
-              <div className="formlayout">
+            <div className="formlayout-p">
+              {" "}
+              <p>
+                <span style={{ color: "red" }}>*</span> Customer
+              </p>
+              <TextField
+                style={{ width: "100%" }}
+                name="customer"
+                value={Formik.values.barcode}
+                onChange={Formik.handleChange}
+                onBlur={Formik.handleBlur}
+                error={
+                  Formik.touched.customer && Boolean(Formik.errors.customer)
+                }
+              ></TextField>
+            </div>
+
+            <div className="formlayout">
               <div className="formlayout-p">
                 <p>
                   <span style={{ color: "red" }}>*</span>Payment
@@ -318,37 +284,45 @@ cartItem.map((items,index)=>{
                   <MenuItem value="Bank Transfer">Bank Transfer</MenuItem>
                 </Select>
               </div>
-              <span className="checkoutbtn"
-              onClick={()=>{
-                dispatch(addSales(cartItem,Checkuser && Checkuser.account ? Checkuser.account._id :"" ,Formik.values.customer,Formik.values.payment))
-              }}
+
+              {loading ? (
+                <span
+                    className="checkoutbtn">
+  <CircleSpinner color="aqua" />
+                    </span>
               
-    
-    > Checkout </span>
-              
+              ) : (
+                <>
+                  <span
+                    className="checkoutbtn"
+                    onClick={() => {
+                      setload(true);
+                      dispatch(
+                        addSales(
+                          cartItem,
+                          Checkuser && Checkuser.account
+                            ? Checkuser.account._id
+                            : "",
+                          Formik.values.customer,
+                          Formik.values.payment
+                        )
+                      );
+                    }}
+                  >
+                    {" "}
+                    Checkout{" "}
+                  </span>
+                </>
+              )}
             </div>
-        </div>
-        
-        
+          </div>
         </div>
       </div>
-      
-
-
-
-
-
-
-
-
-
-
 
       <p className="header">Products in Stock</p>
       {allproducts && allproducts.data ? (
         <>
-          {allproducts.data.length >
-          0 ? (
+          {allproducts.data.length > 0 ? (
             <div className="missingreported">
               <div className="headert">
                 <div className="header-col">No</div>
@@ -360,42 +334,40 @@ cartItem.map((items,index)=>{
                 <div className="header-column">Action</div>
               </div>
               <>
-                {allproducts.data
-                  .map((product, index) => {
-                    return (
-                      <div className="body-t" key={index}>
-                        <div className="body-col">{index + 1}</div>
+                {allproducts.data.map((product, index) => {
+                  return (
+                    <div className="body-t" key={index}>
+                      <div className="body-col">{index + 1}</div>
 
-                        <div className="body-col-h">{product.productname}</div>
-                        <div className="body-column">{product.quantity}</div>
-                        <div className="body-column">{product.price}</div>
-                        <div className="body-column">
-                          {product.quantity * product.price}
-                        </div>
-                        <div className="body-column">
-                          {formatDate(product.expiryday)}
-                        </div>
-                        <div className="body-column">
-                         
-                          <span
-                            onClick={() => {
-                              settarget(product);
-                              setproductid(product._id);
-                              setmodify(true);
-                              setTimeout(() => {
-                                document
-                                  .getElementById("bottomform")
-                                  .scrollIntoView({ behavior: "smooth" });
-                              });
-                            }}
-                            style={{ marginLeft: "5px" }}
-                          >
-                            Sale now
-                          </span>
-                        </div>
+                      <div className="body-col-h">{product.productname}</div>
+                      <div className="body-column">{product.quantity}</div>
+                      <div className="body-column">{product.price}</div>
+                      <div className="body-column">
+                        {product.quantity * product.price}
                       </div>
-                    );
-                  })}
+                      <div className="body-column">
+                        {formatDate(product.expiryday)}
+                      </div>
+                      <div className="body-column">
+                        <span
+                          onClick={() => {
+                            settarget(product);
+                            setproductid(product._id);
+                            setmodify(true);
+                            setTimeout(() => {
+                              document
+                                .getElementById("bottomform")
+                                .scrollIntoView({ behavior: "smooth" });
+                            });
+                          }}
+                          style={{ marginLeft: "5px" }}
+                        >
+                          Sale now
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
               </>
             </div>
           ) : (
@@ -406,7 +378,6 @@ cartItem.map((items,index)=>{
         <p></p>
       )}
     </div>
-
   );
 };
 export default StartSaleform;

@@ -84,7 +84,7 @@ export const addSales = (data,user,customer,payment) => {
         );
         dispatch(
             notify.notify_success({
-              msg: `Add !`,
+              msg: `Successfull !`,
             }))
   
       } catch (error) {
