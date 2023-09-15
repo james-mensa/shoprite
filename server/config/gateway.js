@@ -69,9 +69,9 @@ const AdminNotification = async (user,userEmail,product,id,quantity,price) => {
     const emailbody = {
       body: {
         name: user,
-        intro:   `Quick Notice.Please Product named ${product} with ${id} will expiry in less than a month  `,
+        intro:   `Quick Notice.Please Product named ${product} with ID ${id} will expiry in less than a month  `,
         action: {
-          instructions:"Quantity: ${quantity}  Total cost :GH₵ ${price} . Check the link below for more detais "  ,
+          instructions:`Quantity: ${quantity}  Total cost :GH₵ ${price} . Check the link below for more detais`  ,
           button: {
             color: "#22BC66", // Optional action button color
             text: `CLICK TO SEE MORE`,
